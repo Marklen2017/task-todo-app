@@ -44,7 +44,7 @@ const Item = ({ todoItem, completedTodo, setTodos, todos }) => {
             onChange={() => completedTodo(todoItem.id)}
             disabled={todoItem.completed ? true : false}
           />{" "}
-          <span>{todoItem.date === todoItem.date ? todoItem.date : 'asdasd'}</span>{" "}
+          <span>{parseInt(todoItem.date) === todoItem.date ? todoItem.date : 'asdasd'}</span>{" "}
           <button onClick={handleEdit} disabled={todoItem.completed}>
             Edit
           </button>
