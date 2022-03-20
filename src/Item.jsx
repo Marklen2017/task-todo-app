@@ -9,30 +9,43 @@ const Item = ({ todoItem, completedTodo, setTodos, todos }) => {
     setTodo(e.target.value);
   };
 
+  const handleEditChangeDate = (e) => {
+    setDate(e.target.value);
+  };
+
   const handleEdit = () => {
     setEdit(!edit);
   };
 
-  const handleDelete = (name) => {
-    console.log("ProductList.onDelete: ", name);
-    todos = todos.filter(product => product.name !== name);
-    setTodos({todos});
-    console.log(todos)
-    localStorage.setItem('items', JSON.stringify(todos));
-  }
+  const handleDelete = (id) => {
+    let todos = JSON.parse(localStorage.getItem('items'))
+    let todoKeys = Object.keys(todos);
+
+    todoKeys.forEach(key => {
+      const todo =  todos[key]
+      console.log(todo)
+    })
+
+    let index = todos.findIndex(item => item.id === id)
+    todos.splice(index);
+    localStorage.setItem("items", JSON.stringify(todos));
+    window.location.reload(false);
+    if (todos.length === 0) {
+      localStorage.removeItem("items");
+    } 
+   }
 
   const handleEditSubmit = (id) => {
     const editedList = todos.map((oneTodo) => {
       if (oneTodo.id === id) {
-        console.log(id);
         oneTodo.task = todo;
+        oneTodo.date = date;
       }
       return oneTodo;
     });
     localStorage.setItem("items", JSON.stringify(editedList));
     setTodos(editedList);
     handleEdit();
-    console.log(todo, id);
   };
   return (
     <div className="todo" key={todoItem.id}>
@@ -44,11 +57,11 @@ const Item = ({ todoItem, completedTodo, setTodos, todos }) => {
             onChange={() => completedTodo(todoItem.id)}
             disabled={todoItem.completed ? true : false}
           />{" "}
-          <span>{parseInt(todoItem.date) === todoItem.date ? todoItem.date : 'asdasd'}</span>{" "}
+          <span>{todoItem.date}</span>{" "}
           <button onClick={handleEdit} disabled={todoItem.completed}>
             Edit
           </button>
-          <button onClick={handleDelete} disabled={todoItem.completed}>
+          <button onClick={handleDelete}>
             Delete
           </button>
         </>
@@ -60,6 +73,13 @@ const Item = ({ todoItem, completedTodo, setTodos, todos }) => {
             value={todo}
             name="todo"
             onChange={handleEditChange}
+          />
+          <input
+            type="text"
+            value={date}
+            type="date"
+            name="date"
+            onChange={handleEditChangeDate}
           />
           <button onClick={handleEdit}>Cancel</button>
           <button onClick={handleDelete}>Delete</button>

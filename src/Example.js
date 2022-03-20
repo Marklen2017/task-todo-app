@@ -84,7 +84,6 @@ const Todo = () => {
             <div className="todo-box">
               <h3>Dates</h3>
               {todos.map((todoItem) => {
-                console.log(todos)
                 return (
                   <Item
                     todoItem={todoItem}
